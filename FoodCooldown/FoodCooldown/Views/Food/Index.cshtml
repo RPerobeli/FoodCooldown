@@ -1,0 +1,40 @@
+﻿@* Views/Food/Index.cshtml *@
+@model List<FoodCooldown.Models.FoodItem>
+
+<h1>Food Cooldown</h1>
+
+<div class="food-container">
+    @foreach (var food in Model)
+    {
+        <div class="food-item @(food.LastConsumed.AddDays(food.CooldownDays) > DateTime.Now ? "disabled" : "")">
+            <img src="@food.ImagePath" alt="@food.Name" />
+            <p>@food.Name</p>
+            <form asp-action="Consume" method="post">
+                <input type="hidden" name="id" value="@food.Id" />
+                <button type="submit" @(food.LastConsumed.AddDays(food.CooldownDays) > DateTime.Now ? "disabled" : "")>
+                    Consumir
+                </button>
+            </form>
+            <p>Próximo consumo: @food.LastConsumed.AddDays(food.CooldownDays).ToShortDateString()</p>
+        </div>
+    }
+</div>
+
+<style>
+    .food-item {
+        display: inline-block;
+        margin: 10px;
+        text-align: center;
+    }
+
+    .disabled {
+        opacity: 0.5;
+    }
+
+    img {
+        width: 100px;
+        height: 100px;
+        object-fit: fill;
+    }
+
+</style>

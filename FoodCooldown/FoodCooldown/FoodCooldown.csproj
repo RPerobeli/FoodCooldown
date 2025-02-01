@@ -1,0 +1,18 @@
+<Project Sdk="Microsoft.NET.Sdk.Web">
+
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <None Include="wwwroot\Images\Brigadeiro.jpg" />
+    <None Include="wwwroot\Images\Hamburguer.jpg" />
+    <None Include="wwwroot\Images\Pastel.jpg" />
+    <None Include="wwwroot\Images\pizza.jpg" />
+    <None Include="wwwroot\Images\pudim.jpg" />
+    <None Include="wwwroot\Images\Sorvete.jpg" />
+  </ItemGroup>
+
+</Project>

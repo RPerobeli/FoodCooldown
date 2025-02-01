@@ -1,0 +1,12 @@
+1|Pizza|/Images/Pizza.jpg|01/02/2024 10:46:21|30
+2|Hamburguer|/Images/Hamburguer.jpg|01/02/2024 10:44:46|30
+3|Sorvete|/Images/Sorvete.jpg|01/02/2024 10:58:08|90
+4|Brigadeiro|/Images/Brigadeiro.jpg|01/02/2024 10:48:07|60
+5|Pastel|/Images/Pastel.jpg|01/02/2024 10:48:07|30
+6|Pudim|/Images/Pudim.jpg|01/02/2024 10:48:07|90
+7|Bolo|/Images/Bolo.jpg|01/02/2024 10:48:07|90
+8|BoloPadaria|/Images/BoloPadaria.jpg|01/02/2024 10:48:07|30
+9|PizzaCaseira|/Images/PizzaCaseira.jpg|01/02/2024 10:48:07|30
+10|PaoDeQueijo|/Images/PaoDeQueijo.jpg|01/02/2024 10:48:07|30
+11|CachorroQuente|/Images/CachorroQuente.jpg|01/02/2024 10:48:07|30
+12|Churrasco|/Images/Churrasco.jpg|01/02/2024 10:48:07|30
