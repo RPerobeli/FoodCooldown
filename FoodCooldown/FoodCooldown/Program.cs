@@ -7,6 +7,10 @@ builder.Services.AddControllersWithViews();
 // Adiciona o serviço de armazenamento
 builder.Services.AddSingleton<FileStorageService>();
 
+builder.WebHost.ConfigureKestrel(options =>
+{
+    options.ListenAnyIP(8080);
+});
 
 var app = builder.Build();
 

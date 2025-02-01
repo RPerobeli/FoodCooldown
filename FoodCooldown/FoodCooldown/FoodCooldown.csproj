@@ -10,8 +10,8 @@
     <None Include="wwwroot\Images\Brigadeiro.jpg" />
     <None Include="wwwroot\Images\Hamburguer.jpg" />
     <None Include="wwwroot\Images\Pastel.jpg" />
-    <None Include="wwwroot\Images\pizza.jpg" />
-    <None Include="wwwroot\Images\pudim.jpg" />
+    <None Include="wwwroot\Images\Pizza.jpg" />
+    <None Include="wwwroot\Images\Pudim.jpg" />
     <None Include="wwwroot\Images\Sorvete.jpg" />
   </ItemGroup>
 
