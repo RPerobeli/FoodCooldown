@@ -15,4 +15,9 @@
     <None Include="wwwroot\Images\Sorvete.jpg" />
   </ItemGroup>
 
+  <ItemGroup>
+    <PackageReference Include="MongoDB.Driver" Version="3.7.0" />
+    <PackageReference Include="Swashbuckle.AspNetCore" Version="10.1.4" />
+  </ItemGroup>
+
 </Project>

@@ -1,37 +1,39 @@
-using FoodCooldown.Services;
+using FoodCooldown.DependencyInjection;
 
 var builder = WebApplication.CreateBuilder(args);
 
+builder.Services.AddDependenciasFoodCooldown(builder.Configuration);
+
 // Add services to the container.
-builder.Services.AddControllersWithViews();
-// Adiciona o serviço de armazenamento
-builder.Services.AddSingleton<FileStorageService>();
+builder.Services.AddControllers();
+// Adiciona o serviï¿½o de armazenamento
 
 builder.WebHost.ConfigureKestrel(options =>
 {
     options.ListenAnyIP(8080);
 });
 
+builder.Services.AddEndpointsApiExplorer();
+builder.Services.AddSwaggerGen();
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
-if (!app.Environment.IsDevelopment())
+if (app.Environment.IsDevelopment())
 {
-    app.UseExceptionHandler("/Home/Error");
-    // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
-    app.UseHsts();
+
+    app.UseSwagger();
+    app.UseSwaggerUI(c => {
+        c.SwaggerEndpoint("/swagger/v1/swagger.json", "Minha API v1");
+        c.RoutePrefix = "swagger"; // Isso garante que ele responda em /swagger
+    });
 }
 
 app.UseHttpsRedirection();
-app.UseStaticFiles();
-
-app.UseRouting();
 
 app.UseAuthorization();
 
-app.MapControllerRoute(
-    name: "default",
-    //pattern: "{controller=Home}/{action=Index}/{id?}");
-    pattern: "{controller=Food}/{action=Index}/{id?}");
+app.MapControllers();
 
 app.Run();
+
