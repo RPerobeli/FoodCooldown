@@ -1,27 +1,52 @@
-# Etapa 1: Build da aplica��o
+# ==========================================
+# ETAPA 1: Build do Frontend (React + Vite + TS)
+# ==========================================
+FROM node:20-alpine AS node-builder
+WORKDIR /app/frontend
+
+# Copia arquivos de dependências
+COPY FrontCooldown/package*.json ./
+RUN npm install
+
+# Copia o restante do código do front e gera o build (gera a pasta /dist)
+COPY FrontCooldown/ ./
+RUN npm run build
+
+# ==========================================
+# ETAPA 2: Build do Backend (.NET 8)
+# ==========================================
 FROM mcr.microsoft.com/dotnet/sdk:8.0 AS build
 WORKDIR /app
 
-# Copia o arquivo de projeto e restaura depend�ncias
-COPY ./FoodCooldown/FoodCooldown/FoodCooldown.csproj .
+# Copia o arquivo de projeto e restaura dependências
+# Caminho ajustado: FoodCooldown (raiz) -> FoodCooldown (pasta do projeto)
+COPY FoodCooldown/FoodCooldown/FoodCooldown.csproj ./
 RUN dotnet restore
 
-# Copia o restante do c�digo e publica a aplica��o
-COPY FoodCooldown/FoodCooldown .
+# Copia o código do backend e publica
+COPY FoodCooldown/FoodCooldown/ ./
 RUN dotnet publish -c Release -o /out
 
-# Etapa 2: Criar a imagem final
+# ==========================================
+# ETAPA 3: Imagem Final (Runtime)
+# ==========================================
 FROM mcr.microsoft.com/dotnet/aspnet:8.0
 WORKDIR /app
 
-# Cria a pasta Data
+# Cria a pasta de dados persistentes
 RUN mkdir -p /app/Data
 
-# Copia os arquivos compilados
+# Copia os arquivos compilados do .NET
 COPY --from=build /out .
 
-# Copia o arquivo foodData.txt para a pasta /app/Data (se n�o for copiado na primeira etapa)
+# Copia o build do Frontend (Vite gera /dist) para a pasta de arquivos estáticos do .NET
+COPY --from=node-builder /app/frontend/dist ./wwwroot
+
+# Copia o arquivo de dados específico para a pasta Data
 COPY FoodCooldown/FoodCooldown/Data/foodData.txt /app/Data/
 
-# Define o comando de inicializa��o
+# Expõe as portas padrão do ASP.NET Core
+EXPOSE 80
+EXPOSE 443
+
 ENTRYPOINT ["dotnet", "FoodCooldown.dll"]
