@@ -16,6 +16,17 @@ builder.WebHost.ConfigureKestrel(options =>
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("DevelopmentCorsPolicy", policy =>
+    {
+        // adicionando liberacao de CORS, para permitir que o frontend acesse a API em dev
+        policy.WithOrigins("http://localhost:3000", "http://localhost:5173") 
+              .AllowAnyHeader()
+              .AllowAnyMethod();
+    });
+});
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
@@ -27,6 +38,7 @@ if (app.Environment.IsDevelopment())
         c.SwaggerEndpoint("/swagger/v1/swagger.json", "Minha API v1");
         c.RoutePrefix = "swagger"; // Isso garante que ele responda em /swagger
     });
+    app.UseCors("DevelopmentCorsPolicy");
 }
 
 app.UseHttpsRedirection();
