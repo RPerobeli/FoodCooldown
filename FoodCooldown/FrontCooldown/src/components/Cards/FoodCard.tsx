@@ -1,6 +1,7 @@
 import type { JSX } from "react";
 import type IFoodItem from "../../Interfaces/Home/IFoodItem";
 import SimpleButton from "../Buttons/SimpleButton";
+import SubtitleText from "../Text/Text";
 
 interface IFoodCardProps {
     food: IFoodItem;
@@ -13,37 +14,97 @@ function formatDate(date: Date): string {
     return `${day}/${month}/${year}`;
 }
 
+import { 
+  Timer, 
+  Plus, 
+  Trash2, 
+  CheckCircle2, 
+  Clock, 
+  Calendar,
+  ChevronRight,
+  History,
+  AlertCircle
+} from 'lucide-react';
+import { 
+  MdFastfood, 
+  MdLocalPizza, 
+  MdIcecream, 
+  MdCake, 
+  MdCoffee,
+  MdRestaurant,
+  MdOutlineLunchDining,
+  MdOutlineBakeryDining,
+  MdOutlineDinnerDining,
+  MdOutlineLocalBar
+} from 'react-icons/md';
+import { 
+  FaBurger, 
+  FaHotdog, 
+  FaCookie, 
+  FaBowlFood,
+  FaAppleWhole,
+  FaPizzaSlice,
+  FaFish
+} from 'react-icons/fa6';
+import { GiCupcake, GiDonut, GiNoodles, GiSushis, GiTacos, GiPopcorn, GiBeerStein } from 'react-icons/gi';
+import StatusCard from "./StatusCard";
 
 function ConsumirFood(food: IFoodItem): void {
     alert(`Você consumiu ${food.name}!`);
     // Aqui você pode adicionar a lógica para atualizar o estado do alimento, como definir a data de consumo atual e calcular a próxima data de consumo.
 }
+
+function calcularDiasFaltantes(dataFutura: Date, dataReferencia: Date = new Date()) {
+    // Garantimos que trabalhamos com objetos Date
+    const d1 = new Date(dataFutura);
+    const d2 = new Date(dataReferencia);
+
+    // Zeramos as horas para comparar apenas o calendário (dias inteiros)
+    d1.setHours(0, 0, 0, 0);
+    d2.setHours(0, 0, 0, 0);
+
+    // Diferença em milissegundos
+    const diferencaMs = d1 - d2;
+
+    // Conversão de ms para dias: (1000ms * 60s * 60m * 24h)
+    const diasFaltantes = Math.ceil(diferencaMs / (1000 * 60 * 60 * 24));
+
+    return diasFaltantes > 0 ? diasFaltantes : 0;
+}
 export function FoodCard({ food }: IFoodCardProps): JSX.Element {
 
     return (
-        <li className="bg-[#333333] p-0.5 rounded-xl shadow-lg border border-[#444444] hover:shadow-indigo-600 transition duration-300 flex flex-row items-center cursor-pointer w-full">
-            <div className="grid grid-cols-4 items-center gap-15 w-full">
-                <div className="flex justify-start">
-                    <span className="text-4xl mb-3">🍽️</span>
-                    {/* <span className="text-4xl mb-3">{food.imageUrl}</span> adicionar aqui quando houver imagens de comida */}           
+        <div className="py-5 bg-[#2c2c2c] p-0.5 rounded-xl shadow-lg border border-indigo-600 hover:shadow-indigo-600 transition duration-300 flex flex-col cursor-pointer">
+            <div className="flex flex-col  w-full">
+                <div className="flex justify-start p-2">
+                    <div className = "bg-indigo-500/10 rounded-[10px]">
+                        <MdLocalPizza className="text-4xl p-2 text-indigo-600"/>
+                    </div>
                 </div>
-                <div className="justify-items-center">
-                    <h2 className="text-xl font-semibold text-white text-center">
+                <div className="justify-items-start">
+                    <SubtitleText className="px-2 text-xl text-white text-center font-bold ">
                         {food.name}
-                    </h2>
+                    </SubtitleText>
                 </div>
-                <div className="justify-items-center">
-                    <h2 className="text-xl font-semibold text-white text-center">
-                        Prox: {formatDate(food.nextConsumptionDate)}
-                    </h2>
-                </div>
-                <div className="flex justify-end mr-1.5">
-                    <SimpleButton onClick={() => ConsumirFood(food)} width={120} height={40} color="#3949AB">
-                        Consumir
+                {calcularDiasFaltantes(food.nextConsumptionDate) > 0 ? 
+                <div className="flex flex-row items-center">
+                    <Clock className="text-[12px] text-gray-600 pl-2" />
+                    <SubtitleText className="px-2 text-[12px] text-gray-500 text-center ">
+                        Cooldown: {calcularDiasFaltantes(food.nextConsumptionDate)} dia(s) 
+                    </SubtitleText>
+                </div> : <></>}
+                <StatusCard></StatusCard>
+                
+                <div className="flex justify-center mt-2 px-2">
+                    <SimpleButton onClick={() => ConsumirFood(food)} color="#4f46e5" className= 'w-full'>
+                        <div className = 'flex flex-row'>
+                            <p>Consumir Agora</p>
+                            <ChevronRight className="ml-1" />
+                        </div>
                     </SimpleButton>
                 </div>
             </div>
-        </li>
+        </div>
 
     );
 

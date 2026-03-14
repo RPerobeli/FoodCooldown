@@ -3,6 +3,8 @@ import { getFoods } from "../api/foodService";
 import type IFoodItem from "../Interfaces/Home/IFoodItem";
 import { FoodCard } from "../components/Cards/FoodCard";
 import Header from "../components/Header/Header";
+import { ResumeePanel } from "../components/Panels/ResumeePanel";
+import FoodGrid from "../components/Grids/FoodGrid";
 
 
 function Home() {
@@ -38,13 +40,12 @@ function Home() {
     if (loading) return <p>Carregando...</p>;
 
     return (
-        <div className="flex flex-col bg-[#242424] text-white justify-center items-center min-w-screen">
-            <Header text="FoodCooldown" />
-            <ul className="flex flex-col gap-6 justify-center w-4xl">
-                {foods.map((food: IFoodItem, index) => (
-                    <FoodCard key={index} food={food} />
-                ))}
-            </ul>
+        <div className="flex flex-col bg-[#242424] text-white justify-center items-center md:min-w-screen px-30 py-10">
+            <div className = 'w-200 md:w-full'>
+                <Header text="FoodCooldown" />
+                <ResumeePanel foodList={foods} />
+                <FoodGrid foods={foods} />
+            </div>
         </div>
     );
 }
