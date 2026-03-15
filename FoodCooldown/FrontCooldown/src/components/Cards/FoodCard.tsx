@@ -51,7 +51,7 @@ function calcularDiasFaltantes(dataFutura: Date, dataReferencia: Date = new Date
     d2.setHours(0, 0, 0, 0);
 
     // Diferença em milissegundos
-    const diferencaMs = d1 - d2;
+    const diferencaMs = d1.getTime() - d2.getTime();;
 
     // Conversão de ms para dias: (1000ms * 60s * 60m * 24h)
     const diasFaltantes = Math.ceil(diferencaMs / (1000 * 60 * 60 * 24));

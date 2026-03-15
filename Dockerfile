@@ -5,11 +5,11 @@ FROM node:20-alpine AS node-builder
 WORKDIR /app/frontend
 
 # Copia arquivos de dependências
-COPY FrontCooldown/package*.json ./
+COPY FoodCooldown/FrontCooldown/package*.json ./
 RUN npm install
 
 # Copia o restante do código do front e gera o build (gera a pasta /dist)
-COPY FrontCooldown/ ./
+COPY FoodCooldown/FrontCooldown/ ./
 RUN npm run build
 
 # ==========================================
@@ -46,7 +46,7 @@ COPY --from=node-builder /app/frontend/dist ./wwwroot
 COPY FoodCooldown/FoodCooldown/Data/foodData.txt /app/Data/
 
 # Expõe as portas padrão do ASP.NET Core
-EXPOSE 80
-EXPOSE 443
+# EXPOSE 80
+# EXPOSE 443
 
 ENTRYPOINT ["dotnet", "FoodCooldown.dll"]

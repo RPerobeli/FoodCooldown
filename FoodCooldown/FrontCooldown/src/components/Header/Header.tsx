@@ -4,21 +4,9 @@ import Title from "../Text/Title";
 import SubtitleText from "../Text/Text";
 import SimpleButton from "../Buttons/SimpleButton";
 import { 
-  Timer, 
-  Plus, 
-  Trash2, 
-  CheckCircle2, 
-  Clock, 
-  Calendar,
-  ChevronRight,
-  History,
-  AlertCircle
-} from 'lucide-react';
+  Plus} from 'lucide-react';
 
-interface IHeaderProps {
-    text: string;
-}
-export default function Header(props: IHeaderProps) : JSX.Element {
+export default function Header() : JSX.Element {
     return (
         <>
         <div className="flex flex-col w-full items-center justify-between mb-6">

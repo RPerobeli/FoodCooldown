@@ -1,4 +1,5 @@
 using FoodCooldown.DependencyInjection;
+using System.IO;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -39,13 +40,17 @@ if (app.Environment.IsDevelopment())
         c.RoutePrefix = "swagger"; // Isso garante que ele responda em /swagger
     });
     app.UseCors("DevelopmentCorsPolicy");
+    app.UseHttpsRedirection();
 }
 
-app.UseHttpsRedirection();
+
+app.UseStaticFiles();
 
 app.UseAuthorization();
 
 app.MapControllers();
+
+app.MapFallbackToFile("index.html");
 
 app.Run();
 
