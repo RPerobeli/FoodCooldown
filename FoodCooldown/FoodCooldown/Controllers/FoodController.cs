@@ -36,12 +36,11 @@ namespace FoodCooldown.Controllers
             try
             {
                 var foodItems = await _storageService.LoadFoodItems();
-                var foodItem = foodItems.Find(f => f.Id == id);
-
+                FoodItem foodItem = foodItems.Find(f => f.Id == id);
                 if (foodItem != null)
                 {
                     foodItem.LastConsumed = DateTime.Now;
-                    _storageService.SaveFoodItems(foodItems);
+                    await _storageService.UpdateFoodItem(foodItem);
                 }
                 
                 return Ok();

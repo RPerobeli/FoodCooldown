@@ -11,7 +11,7 @@ namespace FoodCooldown.Repository
         Task<List<FoodItem>> GetAllAsync();
         Task<FoodItem?> GetByIdAsync(string id);
         Task CreateAsync(FoodItem newFood);
-        Task UpdateAsync(string id, FoodItem updatedFood);
+        Task UpdateAsync(FoodItem updatedFood);
         Task RemoveAsync(string id);
     }
     public class FoodRepository : IFoodRepository
@@ -33,8 +33,8 @@ namespace FoodCooldown.Repository
         public async Task CreateAsync(FoodItem newFood) =>
             await _foodCollection.InsertOneAsync(newFood);
 
-        public async Task UpdateAsync(string id, FoodItem updatedFood) =>
-            await _foodCollection.ReplaceOneAsync(x => x.Id == id, updatedFood);
+        public async Task UpdateAsync(FoodItem updatedFood) =>
+            await _foodCollection.ReplaceOneAsync(x => x.Id == updatedFood.Id, updatedFood);
 
         public async Task RemoveAsync(string id) =>
             await _foodCollection.DeleteOneAsync(x => x.Id == id);

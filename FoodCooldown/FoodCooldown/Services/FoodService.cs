@@ -11,6 +11,7 @@ namespace FoodCooldown.Services
     {
         Task<List<FoodItem>> LoadFoodItems();
         void SaveFoodItems(List<FoodItem> foodItems);
+        Task UpdateFoodItem(FoodItem foodItem);
     }
     public class FoodService : IFoodService
     {
@@ -66,6 +67,13 @@ namespace FoodCooldown.Services
                 lines.Add($"{item.Id}|{item.Name}|{item.ImagePath}|{item.LastConsumed}|{item.CooldownDays}");
             }
             File.WriteAllLines(_filePath, lines);
+            
+            
+        }
+
+        public async Task UpdateFoodItem(FoodItem foodItem)
+        {
+            await _foodRepository.UpdateAsync(foodItem);
         }
     }
 }

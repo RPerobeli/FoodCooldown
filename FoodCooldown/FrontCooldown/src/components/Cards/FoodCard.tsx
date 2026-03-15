@@ -5,53 +5,40 @@ import SubtitleText from "../Text/Text";
 
 interface IFoodCardProps {
     food: IFoodItem;
-}
-
-function formatDate(date: Date): string {
-    const day = String(date.getDate()).padStart(2, '0');
-    const month = String(date.getMonth() + 1).padStart(2, '0');
-    const year = date.getFullYear();
-    return `${day}/${month}/${year}`;
+    onConsumed: () => void; // Callback para notificar o componente pai que a ação de consumir foi realizada
 }
 
 import { 
-  Timer, 
-  Plus, 
-  Trash2, 
-  CheckCircle2, 
   Clock, 
-  Calendar,
-  ChevronRight,
-  History,
-  AlertCircle
-} from 'lucide-react';
+  ChevronRight} from 'lucide-react';
 import { 
-  MdFastfood, 
   MdLocalPizza, 
   MdIcecream, 
   MdCake, 
   MdCoffee,
-  MdRestaurant,
-  MdOutlineLunchDining,
-  MdOutlineBakeryDining,
-  MdOutlineDinnerDining,
-  MdOutlineLocalBar
-} from 'react-icons/md';
+  MdRestaurant} from 'react-icons/md';
 import { 
   FaBurger, 
   FaHotdog, 
-  FaCookie, 
-  FaBowlFood,
   FaAppleWhole,
-  FaPizzaSlice,
   FaFish
 } from 'react-icons/fa6';
-import { GiCupcake, GiDonut, GiNoodles, GiSushis, GiTacos, GiPopcorn, GiBeerStein, GiBarbecue } from 'react-icons/gi';
+import { GiDonut, GiNoodles, GiSushis, GiTacos, GiBarbecue } from 'react-icons/gi';
 import StatusCard from "./StatusCard";
+import { consumeFood } from "../../api/foodService";
 
-function ConsumirFood(food: IFoodItem): void {
-    alert(`Você consumiu ${food.name}!`);
-    // Aqui você pode adicionar a lógica para atualizar o estado do alimento, como definir a data de consumo atual e calcular a próxima data de consumo.
+const ConsumirFood = async (food: IFoodItem, onConsumed: () => void): Promise<void> => {
+    const confirmacao = window.confirm(`Deseja consumir ${food.name} agora?`);
+    if (confirmacao) {
+        try {
+            await consumeFood(food.id);
+            alert(`${food.name} consumido com sucesso!`);
+            // Aqui você pode adicionar lógica para atualizar o estado do componente pai, se necessário
+            onConsumed(); // Notifica o componente pai que a ação foi realizada
+        } catch (error) {
+            alert(`Ocorreu um erro ao consumir ${food.name}. Tente novamente.`);
+        }
+    }
 }
 
 function calcularDiasFaltantes(dataFutura: Date, dataReferencia: Date = new Date()) {
@@ -94,8 +81,8 @@ function getFoodIcon(foodName: string): JSX.Element {
 }
 
 
-export function FoodCard({ food }: IFoodCardProps): JSX.Element {
-
+export function FoodCard({ food , onConsumed}: IFoodCardProps): JSX.Element {
+    const isAvailable = calcularDiasFaltantes(food.nextConsumptionDate) <= 0;
     return (
         <div className="py-5 bg-[#2c2c2c] p-0.5 rounded-xl shadow-lg border border-indigo-600 hover:shadow-indigo-600 transition duration-300 flex flex-col cursor-pointer">
             <div className="flex flex-col  w-full">
@@ -113,13 +100,13 @@ export function FoodCard({ food }: IFoodCardProps): JSX.Element {
                 <div className="flex flex-row items-center">
                     <Clock className="text-[12px] text-gray-600 pl-2" />
                     <SubtitleText className="px-2 text-[12px] text-gray-500 text-center ">
-                        Cooldown: {calcularDiasFaltantes(food.nextConsumptionDate)} dia(s) 
+                        Cooldown: {calcularDiasFaltantes(food.nextConsumptionDate)} dia(s) restante(s).
                     </SubtitleText>
                 </div> : <></>}
-                <StatusCard isAvailable={calcularDiasFaltantes(food.nextConsumptionDate)<=0} />
+                <StatusCard isAvailable={isAvailable} />
                 
                 <div className="flex justify-center mt-2 px-2">
-                    <SimpleButton onClick={() => ConsumirFood(food)} color="#4f46e5" className= 'w-full'>
+                    <SimpleButton onClick={() => ConsumirFood(food, onConsumed)} color="#4f46e5" enabled = {isAvailable} className= 'w-full'>
                         <div className = 'flex flex-row'>
                             <p>Consumir Agora</p>
                             <ChevronRight className="ml-1" />

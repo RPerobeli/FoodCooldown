@@ -1,41 +1,11 @@
-import { useEffect, useState } from "react";
-import { getFoods } from "../api/foodService";
-import type IFoodItem from "../Interfaces/Home/IFoodItem";
-import { FoodCard } from "../components/Cards/FoodCard";
 import Header from "../components/Header/Header";
 import { ResumeePanel } from "../components/Panels/ResumeePanel";
 import FoodGrid from "../components/Grids/FoodGrid";
+import { useFoods } from "../hooks/useUpdateFoods";
 
 
 function Home() {
-    const [foods, setFoods] = useState<IFoodItem[]>([]);
-    const [loading, setLoading] = useState(true);
-
-    useEffect(() => {
-        const fetchFoods = async () => {
-        try {
-            let data = await getFoods();
-            data = data.map((item: IFoodItem) => {
-                const consumedDate = new Date(item.lastConsumed);
-                const nextDate = new Date(consumedDate);
-                nextDate.setDate(consumedDate.getDate() + item.cooldownDays);
-                return {
-                    ...item,
-                    lastConsumed: consumedDate,
-                    nextConsumptionDate: nextDate 
-                };
-            });
-            
-            setFoods(data);
-        } catch (error) {
-            alert("Ocorreu um erro ao carregar os dados." + error);
-        } finally {
-            setLoading(false);
-        }
-        };
-
-        fetchFoods();
-    }, []); // O array vazio garante que rode apenas uma vez ao montar o componente
+    const { foods, loading, refresh } = useFoods(); // Usando o hook
 
     if (loading) return <p>Carregando...</p>;
 
@@ -44,7 +14,7 @@ function Home() {
             <div className = 'w-200 md:w-full'>
                 <Header text="FoodCooldown" />
                 <ResumeePanel foodList={foods} />
-                <FoodGrid foods={foods} />
+                <FoodGrid foods={foods} onActionSuccess={refresh} />
             </div>
         </div>
     );
