@@ -46,7 +46,7 @@ import {
   FaPizzaSlice,
   FaFish
 } from 'react-icons/fa6';
-import { GiCupcake, GiDonut, GiNoodles, GiSushis, GiTacos, GiPopcorn, GiBeerStein } from 'react-icons/gi';
+import { GiCupcake, GiDonut, GiNoodles, GiSushis, GiTacos, GiPopcorn, GiBeerStein, GiBarbecue } from 'react-icons/gi';
 import StatusCard from "./StatusCard";
 
 function ConsumirFood(food: IFoodItem): void {
@@ -71,6 +71,29 @@ function calcularDiasFaltantes(dataFutura: Date, dataReferencia: Date = new Date
 
     return diasFaltantes > 0 ? diasFaltantes : 0;
 }
+
+function getFoodIcon(foodName: string): JSX.Element {
+    const name = foodName.toLowerCase();
+    const className = "text-4xl p-2 text-indigo-600";
+    // Mapeamento de palavras-chave para ícones
+    if (name.includes("pizza")) return <MdLocalPizza className = {className} />;
+    if (name.includes("sorvete") || name.includes("ice cream")) return <MdIcecream className = {className} />;
+    if (name.includes("hamburguer") || name.includes("burger")) return <FaBurger className = {className} />;
+    if (name.includes("café") || name.includes("coffee")) return <MdCoffee className = {className} />;
+    if (name.includes("bolo") || name.includes("cake")) return <MdCake className = {className} />;
+    if (name.includes("donut")) return <GiDonut className = {className} />;
+    if (name.includes("sushi")) return <GiSushis className = {className} />;
+    if (name.includes("taco")) return <GiTacos className = {className} />;
+    if (name.includes("massa") || name.includes("noodles")) return <GiNoodles className = {className} />;
+    if (name.includes("peixe") || name.includes("fish")) return <FaFish className = {className} />;
+    if (name.includes("maçã") || name.includes("apple")) return <FaAppleWhole className = {className} />;
+    if (name.includes("cachorro") || name.includes("hotdog")) return <FaHotdog className = {className} />;
+    if (name.includes("churrasco") || name.includes("barbecue")) return <GiBarbecue className = {className} />;
+    // Ícone padrão caso não encontre correspondência
+    return <MdRestaurant className = {className} />;
+}
+
+
 export function FoodCard({ food }: IFoodCardProps): JSX.Element {
 
     return (
@@ -78,7 +101,7 @@ export function FoodCard({ food }: IFoodCardProps): JSX.Element {
             <div className="flex flex-col  w-full">
                 <div className="flex justify-start p-2">
                     <div className = "bg-indigo-500/10 rounded-[10px]">
-                        <MdLocalPizza className="text-4xl p-2 text-indigo-600"/>
+                        {getFoodIcon(food.name)}
                     </div>
                 </div>
                 <div className="justify-items-start">
@@ -93,7 +116,7 @@ export function FoodCard({ food }: IFoodCardProps): JSX.Element {
                         Cooldown: {calcularDiasFaltantes(food.nextConsumptionDate)} dia(s) 
                     </SubtitleText>
                 </div> : <></>}
-                <StatusCard></StatusCard>
+                <StatusCard isAvailable={calcularDiasFaltantes(food.nextConsumptionDate)<=0} />
                 
                 <div className="flex justify-center mt-2 px-2">
                     <SimpleButton onClick={() => ConsumirFood(food)} color="#4f46e5" className= 'w-full'>
