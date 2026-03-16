@@ -25,14 +25,14 @@ import {
 } from 'react-icons/fa6';
 import { GiDonut, GiNoodles, GiSushis, GiTacos, GiBarbecue } from 'react-icons/gi';
 import StatusCard from "./StatusCard";
-import { consumeFood } from "../../api/foodService";
+import { consumeFood, removeFood } from "../../api/foodService";
+import CloseButton from "../Buttons/CloseButton";
 
 const ConsumirFood = async (food: IFoodItem, onConsumed: () => void): Promise<void> => {
-    const confirmacao = window.confirm(`Deseja consumir ${food.name} agora?`);
+    const confirmacao = true; //window.confirm(`Deseja consumir ${food.name} agora?`);
     if (confirmacao) {
         try {
             await consumeFood(food.id);
-            alert(`${food.name} consumido com sucesso!`);
             // Aqui você pode adicionar lógica para atualizar o estado do componente pai, se necessário
             onConsumed(); // Notifica o componente pai que a ação foi realizada
         } catch (error) {
@@ -83,8 +83,24 @@ function getFoodIcon(foodName: string): JSX.Element {
 
 export function FoodCard({ food , onConsumed}: IFoodCardProps): JSX.Element {
     const isAvailable = calcularDiasFaltantes(food.nextConsumptionDate) <= 0;
+
+    const handleDelete = async (e: React.MouseEvent) => {
+        e.stopPropagation(); // Evita disparar cliques acidentais no card
+        if (window.confirm(`Deseja remover ${food.name}?`)) {
+            try {
+                await removeFood(food.id); 
+                onConsumed(); // Recarrega a lista
+            } catch (error) {
+                alert("Erro ao deletar.");
+            }
+        }
+    };
+
     return (
-        <div className="py-5 bg-[#2c2c2c] p-0.5 rounded-xl shadow-lg border border-indigo-600 hover:shadow-indigo-600 transition duration-300 flex flex-col cursor-pointer">
+        <div className="group relative py-5 bg-[#2c2c2c] p-0.5 rounded-xl shadow-lg border border-indigo-600 hover:shadow-indigo-600 transition duration-300 flex flex-col cursor-pointer">
+            <div className="absolute top-1 right-1 opacity-0 group-hover:opacity-100 transition-opacity">
+                <CloseButton onClose={handleDelete} />
+            </div>
             <div className="flex flex-col  w-full">
                 <div className="flex justify-between p-2">
                     <div className = "bg-indigo-500/10 rounded-[10px]">
@@ -103,7 +119,14 @@ export function FoodCard({ food , onConsumed}: IFoodCardProps): JSX.Element {
                     <SubtitleText className="px-2 text-[12px] text-gray-500 text-center ">
                         Cooldown: {calcularDiasFaltantes(food.nextConsumptionDate)} dia(s) restante(s).
                     </SubtitleText>
-                </div> : <></>}
+                </div> : 
+                <div className="flex flex-row items-center">
+                    <Clock className="text-[12px] text-gray-600 pl-2" />
+                    <SubtitleText className="px-2 text-[12px] text-gray-500 text-center ">
+                        Cooldown: {food.cooldownDays} dias.
+                    </SubtitleText>
+                </div>
+                }
                 
                 
                 <div className="flex justify-center mt-2 px-2">

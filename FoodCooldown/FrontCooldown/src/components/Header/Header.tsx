@@ -1,12 +1,17 @@
-import type { JSX } from "react";
+import { useState, type JSX } from "react";
 import CooldownIcon from "../../assets/Icons/CooldownIcon";
 import Title from "../Text/Title";
 import SubtitleText from "../Text/Text";
 import SimpleButton from "../Buttons/SimpleButton";
 import { 
   Plus} from 'lucide-react';
+import AddFoodModal from "../Modals/AddFoodModal";
+
+
+
 
 export default function Header() : JSX.Element {
+    const [isModalOpen, setIsModalOpen] = useState(false);
     return (
         <>
         <div className="flex flex-col w-full mb-6">
@@ -24,7 +29,7 @@ export default function Header() : JSX.Element {
                 <div className = 'w-full md:w-auto'>
                     <SimpleButton 
                         className="w-full md:w-auto"
-                        onClick={() => alert("Button clicked!")}>
+                        onClick={ () => setIsModalOpen(true)}>
                         <div className = "flex flex-row items-center justify-center gap-2 py-1">
                             <Plus className="text-white" />
                             <p>Adicionar Alimento</p>
@@ -33,6 +38,15 @@ export default function Header() : JSX.Element {
                 </div>
             </div>
         </div>
+        {/* Chamada do Modal */}
+        <AddFoodModal 
+            isOpen={isModalOpen} 
+            onClose={() => setIsModalOpen(false)}
+            onSuccess={() => {
+                // Aqui você pode disparar o refresh da página ou hook
+                window.location.reload(); 
+            }}
+        />
         </>
         
     );

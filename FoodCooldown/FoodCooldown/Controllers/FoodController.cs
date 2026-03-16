@@ -79,8 +79,8 @@ namespace FoodCooldown.Controllers
             }
         }
 
-        [HttpPut("Update/id/{id}")]
-        public async Task<IActionResult> Update(string id, FoodItem foodItem)
+        [HttpPut("Reset/id/{id}")]
+        public async Task<IActionResult> Update(string id)
         {
             try
             {
@@ -89,9 +89,8 @@ namespace FoodCooldown.Controllers
 
                 if (existingItem != null)
                 {
-                    foodItems.Remove(existingItem);
-                    foodItems.Add(foodItem);
-                    _storageService.SaveFoodItems(foodItems);
+                    existingItem.LastConsumed = DateTime.MinValue; // Resetar a data de consumo
+                    await _storageService.UpdateFoodItem(existingItem);
                 }
 
                 return Ok();
