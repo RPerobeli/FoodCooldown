@@ -12,6 +12,8 @@ namespace FoodCooldown.Services
         Task<List<FoodItem>> LoadFoodItems();
         void SaveFoodItems(List<FoodItem> foodItems);
         Task UpdateFoodItem(FoodItem foodItem);
+        Task AddFoodItem(FoodItem foodItem);
+        Task DeleteFoodItem(string id);
     }
     public class FoodService : IFoodService
     {
@@ -27,6 +29,12 @@ namespace FoodCooldown.Services
         public FoodService(IFoodRepository foodRepository)
         {
             _foodRepository = foodRepository;
+        }
+
+        public Task AddFoodItem(FoodItem foodItem)
+        {
+            _foodRepository.CreateAsync(foodItem);
+            return Task.CompletedTask;
         }
 
         public async Task<List<FoodItem>> LoadFoodItems()
@@ -75,6 +83,11 @@ namespace FoodCooldown.Services
         public async Task UpdateFoodItem(FoodItem foodItem)
         {
             await _foodRepository.UpdateAsync(foodItem);
+        }
+
+        public async Task DeleteFoodItem(string id)
+        {
+            await _foodRepository.RemoveAsync(id);
         }
     }
 }

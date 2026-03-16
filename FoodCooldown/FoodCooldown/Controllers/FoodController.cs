@@ -55,9 +55,22 @@ namespace FoodCooldown.Controllers
         {
             try
             {
-                var foodItems = await _storageService.LoadFoodItems();
-                foodItems.Add(foodItem);
-                _storageService.SaveFoodItems(foodItems);
+                foodItem.Id = null; // Garantir que o ID seja gerado automaticamente
+                await _storageService.AddFoodItem(foodItem);
+                return Ok();
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, $"Erro interno ao adicionar o alimento: {ex.Message}");
+            }
+        }
+
+        [HttpDelete("id/{id}")]
+        public async Task<IActionResult> Delete(string id)
+        {
+            try
+            {
+                await _storageService.DeleteFoodItem(id);
                 return Ok();
             }
             catch (Exception ex)
