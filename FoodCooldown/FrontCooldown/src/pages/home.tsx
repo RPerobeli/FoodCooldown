@@ -10,8 +10,8 @@ function Home() {
     if (loading) return <p>Carregando...</p>;
 
     return (
-        <div className="flex flex-col bg-[#242424] text-white justify-center items-center md:min-w-screen px-30 py-10">
-            <div className = 'w-200 md:w-full'>
+        <div className="flex flex-col bg-[#242424] text-white justify-center items-center md:min-w-screen px-4 md:px-30 py-10">
+            <div className = 'w-full max-w-6xl'>
                 <Header/>
                 <ResumeePanel foodList={foods} />
                 <FoodGrid foods={foods} onActionSuccess={refresh} />

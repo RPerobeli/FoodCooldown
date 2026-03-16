@@ -61,7 +61,7 @@ function calcularDiasFaltantes(dataFutura: Date, dataReferencia: Date = new Date
 
 function getFoodIcon(foodName: string): JSX.Element {
     const name = foodName.toLowerCase();
-    const className = "text-4xl p-2 text-indigo-600";
+    const className = "text-5xl p-2 text-indigo-600";
     // Mapeamento de palavras-chave para ícones
     if (name.includes("pizza")) return <MdLocalPizza className = {className} />;
     if (name.includes("sorvete") || name.includes("ice cream")) return <MdIcecream className = {className} />;
@@ -86,10 +86,11 @@ export function FoodCard({ food , onConsumed}: IFoodCardProps): JSX.Element {
     return (
         <div className="py-5 bg-[#2c2c2c] p-0.5 rounded-xl shadow-lg border border-indigo-600 hover:shadow-indigo-600 transition duration-300 flex flex-col cursor-pointer">
             <div className="flex flex-col  w-full">
-                <div className="flex justify-start p-2">
+                <div className="flex justify-between p-2">
                     <div className = "bg-indigo-500/10 rounded-[10px]">
                         {getFoodIcon(food.name)}
                     </div>
+                    <StatusCard isAvailable={isAvailable} />
                 </div>
                 <div className="justify-items-start">
                     <SubtitleText className="px-2 text-xl text-white text-center font-bold ">
@@ -103,7 +104,7 @@ export function FoodCard({ food , onConsumed}: IFoodCardProps): JSX.Element {
                         Cooldown: {calcularDiasFaltantes(food.nextConsumptionDate)} dia(s) restante(s).
                     </SubtitleText>
                 </div> : <></>}
-                <StatusCard isAvailable={isAvailable} />
+                
                 
                 <div className="flex justify-center mt-2 px-2">
                     <SimpleButton onClick={() => ConsumirFood(food, onConsumed)} color="#4f46e5" enabled = {isAvailable} className= 'w-full'>

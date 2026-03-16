@@ -18,13 +18,30 @@ export default function SimpleButton({
   const backgroundColor = enabled ? color : "#4b5563";
   return (
     <button
-      onClick={enabled ? onClick : undefined} // Desabilita o clique se não estiver habilitado
+      disabled={!enabled}
+      onClick={onClick}
       // Usamos o atributo 'style' para valores dinâmicos passados via props
       style={{  
         backgroundColor: backgroundColor
       }}
       // Usamos o Tailwind para os comportamentos base (hover, clique, bordas)
-      className={`${className} text-white font-semibold rounded-lg shadow-md hover:brightness-110 active:scale-95 transition-all flex items-center justify-center px-4 py-2`}
+      className={`
+        ${className}
+        text-white 
+        font-semibold 
+        rounded-lg 
+        shadow-md
+        hover:enabled:brightness-110
+        active:enabled:scale-95
+        transition-all 
+        flex
+        items-center 
+        justify-center
+        px-4
+        py-2
+        disabled:opacity-50 
+        disabled:cursor-not-allowed
+        `}
     >
       {children}
     </button>

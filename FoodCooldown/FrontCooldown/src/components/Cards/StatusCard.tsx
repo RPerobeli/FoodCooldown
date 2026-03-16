@@ -9,7 +9,7 @@ interface IStatusCardProps {
 
 export default function StatusCard({ isAvailable }: IStatusCardProps) : JSX.Element {
     return (
-        <div className=' mx-2 bg-indigo-500/10 rounded-[10px] flex flex-row items-center justify-start border border-indigo-600 p-2 mt-4'>
+        <div className=' bg-indigo-500/10 rounded-[10px] flex flex-row items-center justify-start border border-indigo-600 p-2'>
             {isAvailable ? (
                 <CheckCircle2 className="text-emerald-500 p-1" />
             ) : (

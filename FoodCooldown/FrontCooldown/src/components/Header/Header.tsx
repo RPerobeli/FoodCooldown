@@ -9,9 +9,9 @@ import {
 export default function Header() : JSX.Element {
     return (
         <>
-        <div className="flex flex-col w-full items-center justify-between mb-6">
-            <div className="flex flex-row items-center justify-between w-full">
-                <div className="flex flex-row">
+        <div className="flex flex-col w-full mb-6">
+            <div className="flex flex-col md:flex-row items-start md:items-center justify-between w-full gap-4">
+                <div className="flex flex-row items-center gap-2">
                     <CooldownIcon width = {100} height = {100} className="text-indigo-600" />
                     <div className = "flex flex-col">
                         <Title>FoodCooldown</Title>
@@ -21,13 +21,16 @@ export default function Header() : JSX.Element {
                     </div>
                     
                 </div>
-                <SimpleButton 
-                    onClick={() => alert("Button clicked!")}>
-                    <div className = "flex flex-row items-center gap-2">
-                        <Plus className="text-white" />
-                        <p>Adicionar Alimento</p>
-                    </div>
-                </SimpleButton>
+                <div className = 'w-full md:w-auto'>
+                    <SimpleButton 
+                        className="w-full md:w-auto"
+                        onClick={() => alert("Button clicked!")}>
+                        <div className = "flex flex-row items-center justify-center gap-2 py-1">
+                            <Plus className="text-white" />
+                            <p>Adicionar Alimento</p>
+                        </div>
+                    </SimpleButton>
+                </div>
             </div>
         </div>
         </>

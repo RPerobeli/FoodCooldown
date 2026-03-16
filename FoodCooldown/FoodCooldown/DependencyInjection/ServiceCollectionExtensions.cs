@@ -27,6 +27,7 @@ namespace  FoodCooldown.DependencyInjection
             {
                 var client = serviceProvider.GetRequiredService<IMongoClient>();
                 var settings = serviceProvider.GetRequiredService<IOptions<MongoSettings>>().Value;
+                Console.WriteLine($"[INFO] Tentando conectar no banco de dados: '{settings.DatabaseName}'");
                 return client.GetDatabase(settings.DatabaseName);
             });
 

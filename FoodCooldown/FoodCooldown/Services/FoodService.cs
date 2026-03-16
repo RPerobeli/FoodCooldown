@@ -32,29 +32,30 @@ namespace FoodCooldown.Services
         public async Task<List<FoodItem>> LoadFoodItems()
         {            
             var foodItems = await _foodRepository.GetAllAsync();
-            if (foodItems == null || foodItems.Count == 0)
-            {
-                foodItems = new List<FoodItem>();
-                if (File.Exists(_filePath))
-                {
-                    var lines = File.ReadAllLines(_filePath);
-                    foreach (var line in lines)
-                    {
-                        var parts = line.Split('|');
-                        if (parts.Length == 5)
-                        {
-                            foodItems.Add(new FoodItem
-                            {
-                                Id = parts[0],
-                                Name = parts[1],
-                                ImagePath = parts[2],
-                                LastConsumed = DateTime.Parse(parts[3]),
-                                CooldownDays = int.Parse(parts[4])
-                            });
-                        }
-                    }
-                }
-            }   
+            Console.WriteLine($"Itens encontrados: {foodItems.Count}");
+            // if (foodItems == null || foodItems.Count == 0)
+            // {
+            //     foodItems = new List<FoodItem>();
+            //     if (File.Exists(_filePath))
+            //     {
+            //         var lines = File.ReadAllLines(_filePath);
+            //         foreach (var line in lines)
+            //         {
+            //             var parts = line.Split('|');
+            //             if (parts.Length == 5)
+            //             {
+            //                 foodItems.Add(new FoodItem
+            //                 {
+            //                     Id = parts[0],
+            //                     Name = parts[1],
+            //                     ImagePath = parts[2],
+            //                     LastConsumed = DateTime.Parse(parts[3]),
+            //                     CooldownDays = int.Parse(parts[4])
+            //                 });
+            //             }
+            //         }
+            //     }
+            // }   
 
             return foodItems;
         }
